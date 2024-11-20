@@ -45,10 +45,19 @@
             <form id="earring-form">
                 <label for="productName">Product Name:</label>
                 <input type="text" id="productName" name="productName" required>
+
                 <label for="productImage">Product Image:</label>
                 <input type="file" id="productImage" name="productImage" accept="image/*" required>
+                <canvas id="canvas" style="display:none;"></canvas>
+                <a id="leftDownload" style="display:none;">Download Left</a>
+                
+                
+                
+                <a id="rightDownload" style="display:none;">Download Right</a>
+
                 <label for="purchaseLink">Purchase Link:</label>
                 <input type="url" id="purchaseLink" name="purchaseLink" required>
+                
                 <button type="submit">Upload Earring</button>
             </form>
 
@@ -57,6 +66,8 @@
                 <p><strong>Name:</strong> <span id="displayProductName"></span></p>
                 <p><strong>Purchase Link:</strong> <a id="displayPurchaseLink" href="#" target="_blank"></a></p>
                 <img id="displayProductImage" src="#" alt="Earring Image">
+                <img id="leftImage">
+                <img id="rightImage">
             </div>
         </div>
 
@@ -69,6 +80,8 @@
                         <th>Brand</th>
                         <th>Earring Title</th>
                         <th>Earring Image</th>
+                        <th>Left Earring</th>
+                        <th>Right Earring</th>
                         <th>Purchase Link</th>
                     </tr>
                 </thead>

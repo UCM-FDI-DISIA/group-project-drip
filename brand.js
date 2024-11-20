@@ -67,40 +67,108 @@ document.getElementById('login-form').addEventListener('submit', function(event)
 });
 
 // Earring upload logic for brands
-document.getElementById('earring-form').addEventListener('submit', function(event) {
+document.getElementById('earring-form').addEventListener('submit', function (event) {
     event.preventDefault();
 
     let productName = document.getElementById('productName').value;
     let purchaseLink = document.getElementById('purchaseLink').value;
+
     let productImage = document.getElementById('productImage').files[0];
+
+    const img = new Image();
 
     if (productImage) {
         let reader = new FileReader();
-        reader.onload = function(e) {
-            // Store earring details
+
+        reader.onload = function (e) {
+            // Initialize earring data
             let earringData = {
                 brand: document.getElementById('welcomeText').innerText.split(' ')[1],
                 name: productName,
                 image: e.target.result,
+                left: "",
+                right: "",
                 link: purchaseLink
             };
-            earrings.push(earringData);
 
-            // Display earring details for the brand
-            document.getElementById('displayProductName').innerText = productName;
-            document.getElementById('displayPurchaseLink').innerText = "Buy Here";
-            document.getElementById('displayPurchaseLink').href = purchaseLink;
-            document.getElementById('displayProductImage').src = e.target.result;
-            document.getElementById('earringDisplay').style.display = 'block';
+            img.src = e.target.result;
 
-            // Update table for admin view
-            updateEarringTable();
+            img.onload = function () {
+                const canvas = document.getElementById('canvas');
+                const ctx = canvas.getContext('2d');
+
+                const width = img.width;
+                const height = img.height;
+
+                // Set canvas size to the full image dimensions
+                canvas.width = width;
+                canvas.height = height;
+
+                // Draw the full image on the canvas
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Split the image into two parts
+                const leftCanvas = document.createElement('canvas');
+                const rightCanvas = document.createElement('canvas');
+
+                leftCanvas.width = rightCanvas.width = width / 2;
+                leftCanvas.height = rightCanvas.height = height;
+
+                const leftCtx = leftCanvas.getContext('2d');
+                const rightCtx = rightCanvas.getContext('2d');
+
+                // Draw the left half
+                leftCtx.drawImage(canvas, 0, 0, width / 2, height, 0, 0, width / 2, height);
+
+                // Draw the right half
+                rightCtx.drawImage(canvas, width / 2, 0, width / 2, height, 0, 0, width / 2, height);
+
+                // Convert the left half to a downloadable image
+                const leftDataURL = leftCanvas.toDataURL('image/jpeg');
+                const leftImage = document.getElementById('leftImage');
+                leftImage.src = leftDataURL;
+                const leftLink = document.getElementById('leftDownload');
+                leftLink.href = leftDataURL;
+                leftLink.download = 'left.jpg';
+                leftLink.textContent = 'Download Left Half';
+                leftLink.style.display = 'block';
+
+                // Convert the right half to a downloadable image
+                const rightDataURL = rightCanvas.toDataURL('image/jpeg');
+                const rightImage = document.getElementById('rightImage');
+                rightImage.src = rightDataURL;
+                const rightLink = document.getElementById('rightDownload');
+                rightLink.href = rightDataURL;
+                rightLink.download = 'right.jpg';
+                rightLink.textContent = 'Download Right Half';
+                rightLink.style.display = 'block';
+
+                // Update earring data with left and right image data
+                earringData.left = leftDataURL;
+                earringData.right = rightDataURL;
+
+                // Add to earrings array
+                earrings.push(earringData);
+
+                // Display earring details for the brand
+                document.getElementById('displayProductName').innerText = productName;
+                document.getElementById('displayPurchaseLink').innerText = "Buy Here";
+                document.getElementById('displayPurchaseLink').href = purchaseLink;
+                document.getElementById('displayProductImage').src = e.target.result;
+                document.getElementById('earringDisplay').style.display = 'block';
+
+                // Update table for admin view
+                updateEarringTable();
+            };
         };
+
         reader.readAsDataURL(productImage);
     }
 
     document.getElementById('earring-form').reset();
 });
+
+
 
 // Update earring table for admin
 function updateEarringTable() {
@@ -113,6 +181,8 @@ function updateEarringTable() {
             <td>${earring.brand}</td>
             <td>${earring.name}</td>
             <td><img src="${earring.image}" alt="Earring Image"></td>
+            <td><img src="${earring.left}" alt="Left Earring"></td>
+            <td><img src="${earring.right}" alt="Right Earring"></td>
             <td><a href="${earring.link}" target="_blank">Buy Here</a></td>
         `;
         tableBody.appendChild(row);
