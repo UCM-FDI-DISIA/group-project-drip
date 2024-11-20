@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Earring Try On</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils"></script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+
+    <div id="camera">
+      
+        <video id="webcam" autoplay playsinline></video>
+        <canvas id="overlay"></canvas>
+
+        <div id="container" width="100vw">
+          <div class="dropdown">
+            <button class="dropbtn">&#9776;</button>
+            <div class="dropdown-content">
+              <a href="brand.html">Brand Login</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Color Selection Menu -->
+        <div id="color-menu">
+            <button class="color-option" data-color="red" style="background-color: red;"></button>
+            <button class="color-option" data-color="orange" style="background-color: orange;"></button>
+            <button class="color-option" data-color="yellow" style="background-color: yellow;"></button>
+            <button class="color-option" data-color="green" style="background-color: green;"></button>
+            <button class="color-option" data-color="blue" style="background-color: blue;"></button>
+            <button class="color-option" data-color="purple" style="background-color: purple;"></button>
+            <button class="color-option" data-color="pink" style="background-color: pink;"></button>
+            <button class="color-option" data-color="white" style="background-color: white;"></button>
+            <button class="color-option" data-color="black" style="background-color: black;"></button>
+          
+        </div>
+  
+  </div>
+</body>
+</html>
