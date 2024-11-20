@@ -66,6 +66,9 @@ document.getElementById('login-form').addEventListener('submit', function(event)
     document.getElementById('login-form').reset();
 });
 
+// added for db
+const googleSheetsUrl = "";
+
 // Earring upload logic for brands
 document.getElementById('earring-form').addEventListener('submit', function (event) {
     event.preventDefault();
@@ -159,6 +162,27 @@ document.getElementById('earring-form').addEventListener('submit', function (eve
 
                 // Update table for admin view
                 updateEarringTable();
+            
+                // Send data to Google Sheets
+        fetch(googleSheetsUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(earringData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert("Earring uploaded successfully!");
+                updateEarringTable(); // Update table (local or refetch if needed)
+            } else {
+                alert("Failed to upload earring. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error uploading earring:", error);
+            alert("Error uploading earring. Please try again.");
+        });
+                
             };
         };
 
