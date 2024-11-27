@@ -4,6 +4,29 @@ const canvasElement = document.getElementById('overlay');
 const canvasCtx = canvasElement.getContext('2d');
 const colorButtons = document.querySelectorAll('.color-option');
 
+
+
+// Attempt to access the webcam
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then((stream) => {
+      videoElement.srcObject = stream; // Attach the stream to the video element
+      videoElement.play(); // Start playing the video
+
+      // Set the canvas size to match the video size
+      videoElement.onloadedmetadata = () => {
+        canvasElement.width = videoElement.videoWidth;
+        canvasElement.height = videoElement.videoHeight;
+
+        // Call the function to start drawing the face landmarks on the canvas
+        requestAnimationFrame(drawLandmarks);
+      };
+    })
+    .catch((err) => {
+      console.error("Error accessing the webcam: ", err);
+      alert("Error accessing webcam. Please make sure it is enabled and permissions are granted.");
+    });
+
+
 // Default dot color
 let dotColor = 'pink'; // Default to pink
 
@@ -64,13 +87,13 @@ faceMesh.onResults((results) => {
 
         // Draw the smoothed left ear dot
         canvasCtx.beginPath();
-        canvasCtx.arc((smoothedLeftEar.x * canvasElement.width)+20, (smoothedLeftEar.y * canvasElement.height)+30, 8, 0, 2 * Math.PI);
+        canvasCtx.arc((smoothedLeftEar.x * canvasElement.width) + 20, (smoothedLeftEar.y * canvasElement.height) + 30, 8, 0, 2 * Math.PI);
         canvasCtx.fillStyle = dotColor; // Use the selected dot color
         canvasCtx.fill();
 
         // Draw the smoothed right ear dot
         canvasCtx.beginPath();
-        canvasCtx.arc((smoothedRightEar.x * canvasElement.width)-20, (smoothedRightEar.y * canvasElement.height)+30, 8, 0, 2 * Math.PI);
+        canvasCtx.arc((smoothedRightEar.x * canvasElement.width) - 20, (smoothedRightEar.y * canvasElement.height) + 30, 8, 0, 2 * Math.PI);
         canvasCtx.fillStyle = dotColor; // Use the selected dot color
         canvasCtx.fill();
       }
@@ -85,7 +108,7 @@ const startWebcam = () => {
       videoElement.srcObject = stream;
       videoElement.play();
 
-      // Use the MediaPipe Camera class to handle frames
+      // Initialize MediaPipe camera (use the stream from getUserMedia)
       const camera = new Camera(videoElement, {
         onFrame: async () => {
           await faceMesh.send({ image: videoElement });
@@ -97,8 +120,10 @@ const startWebcam = () => {
     })
     .catch((err) => {
       console.error("Error accessing the webcam: ", err);
+      alert("Error accessing webcam. Please make sure it is enabled and permissions are granted.");
     });
 };
+
 
 // Initialize webcam and FaceMesh
 startWebcam();

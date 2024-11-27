@@ -1,82 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brand Login</title>
-    <link rel="stylesheet" href="brand.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brand Login</title>
+  <link rel="stylesheet" href="brand.css">
+  <script defer src="brand.js"></script>
 </head>
 <body>
-    <!-- Log Out button placed outside of welcomeMessage for consistent visibility -->
-    <button id="logoutButton" style="display: none;">Log Out</button>
 
-    <!-- Container for the login and signup forms -->
-    <div class="container" id="authContainer">
-        <div class="form-section">
-            <h2>Create Account</h2>
-            <form id="signup-form">
-                <label for="brandName">Brand Name (No spaces):</label>
-                <input type="text" id="brandName" name="brandName" required pattern="\S+">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <button type="submit">Sign Up</button>
-            </form>
-        </div>
-
-        <div class="form-section">
-            <h2>Login</h2>
-            <form id="login-form">
-                <label for="loginBrandName">Brand Name:</label>
-                <input type="text" id="loginBrandName" name="loginBrandName" required>
-                <label for="loginPassword">Password:</label>
-                <input type="password" id="loginPassword" name="loginPassword" required>
-                <button type="submit">Login</button>
-            </form>
-        </div>
+  <div class="container">
+    <div id="loginSection">
+      <h2>Brand Login</h2>
+      <form id="login-form">
+        <input type="text" id="loginBrandName" placeholder="Brand Name" required />
+        <input type="password" id="loginPassword" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
     </div>
 
-    <!-- Welcome section with upload and table for admin -->
-    <div class="welcome" id="welcomeMessage" style="display: none;">
-        <h2 id="welcomeText"></h2>
-
-        <!-- Form for uploading earrings (visible to brands only) -->
-        <div id="uploadSection" style="display: none;">
-            <h3>Upload Earring</h3>
-            <form id="earring-form">
-                <label for="productName">Product Name:</label>
-                <input type="text" id="productName" name="productName" required>
-                <label for="productImage">Product Image:</label>
-                <input type="file" id="productImage" name="productImage" accept="image/*" required>
-                <label for="purchaseLink">Purchase Link:</label>
-                <input type="url" id="purchaseLink" name="purchaseLink" required>
-                <button type="submit">Upload Earring</button>
-            </form>
-
-            <div id="earringDisplay" style="display: none;">
-                <h3>Earring Uploaded:</h3>
-                <p><strong>Name:</strong> <span id="displayProductName"></span></p>
-                <p><strong>Purchase Link:</strong> <a id="displayPurchaseLink" href="#" target="_blank"></a></p>
-                <img id="displayProductImage" src="#" alt="Earring Image">
-            </div>
-        </div>
-
-        <!-- Table of earrings (visible to admin only) -->
-        <div id="adminTableSection" style="display: none;">
-            <h3>Earring List</h3>
-            <table id="earringTable">
-                <thead>
-                    <tr>
-                        <th>Brand</th>
-                        <th>Earring Title</th>
-                        <th>Earring Image</th>
-                        <th>Purchase Link</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+    <div id="signupSection">
+      <h2>Create Account</h2>
+      <form id="signup-form">
+        <input type="text" id="brandName" placeholder="Brand Name" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <button type="submit">Sign Up</button>
+      </form>
     </div>
+  </div>
 
-    <script src="brand.js"></script>
+  <div id="welcomeMessage" style="display:none;">
+    <h2 id="welcomeText"></h2>
+    <button id="logoutButton" style="display:none;">Logout</button>
+  </div>
+
 </body>
 </html>
