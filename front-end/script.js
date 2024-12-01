@@ -132,4 +132,26 @@ function updateEarringMenu() {
             <img src="${earring.image}" alt="Earring Image" class="earring-menu-image" data-left="${earring.left_image}" data-right="${earring.right_image}">
           `;
           earringOption.addEventListener('click', (e) => {
-            setEarrings(e.target.dataset.left, e.target.datas
+            setEarrings(e.target.dataset.left, e.target.dataset.right);
+          });
+          earringMenu.appendChild(earringOption);
+
+          // Set default earrings if first entry
+          if (index === 0) {
+            setEarrings(earring.left_image, earring.right_image);
+          }
+        });
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching earrings:", error);
+    });
+}
+
+function setEarrings(leftSrc, rightSrc) {
+  selectedLeftEarring.src = leftSrc;
+  selectedRightEarring.src = rightSrc;
+}
+
+// Call updateEarringMenu to load earrings into the menu
+updateEarringMenu();
