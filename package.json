@@ -1,0 +1,25 @@
+{
+  "name": "group-project-drip",
+  "version": "1.0.0",
+  "description": "",
+  "main": "brand.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UCM-FDI-DISIA/group-project-drip.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UCM-FDI-DISIA/group-project-drip/issues"
+  },
+  "homepage": "https://github.com/UCM-FDI-DISIA/group-project-drip#readme",
+  "dependencies": {
+    "express": "^4.21.1",
+    "sqlite3": "^5.1.4"
+  }
+}

@@ -1,15 +1,12 @@
-// Select video, canvas elements, and the color menu buttons
+// Select video and canvas elements
 const videoElement = document.getElementById('webcam');
 const canvasElement = document.getElementById('overlay');
 const canvasCtx = canvasElement.getContext('2d');
-const colorButtons = document.querySelectorAll('.color-option');
-
-// Default dot color
-let dotColor = 'pink'; // Default to pink
+const earringMenu = document.getElementById("earring-menu");
 
 // Initialize MediaPipe FaceMesh
 const faceMesh = new FaceMesh({
-  locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
+  locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}` 
 });
 
 faceMesh.setOptions({
@@ -24,6 +21,10 @@ let leftEarHistory = [];
 let rightEarHistory = [];
 const smoothingFactor = 5;
 
+// Selected earring images
+let selectedLeftEarring = new Image();
+let selectedRightEarring = new Image();
+
 // Function to smooth the landmark positions by averaging the history
 function smoothLandmark(landmarkHistory) {
   const length = landmarkHistory.length;
@@ -35,7 +36,7 @@ function smoothLandmark(landmarkHistory) {
   return { x: sum.x / length, y: sum.y / length };
 }
 
-// Draw large dots on the ears
+// Draw earrings on the ears
 faceMesh.onResults((results) => {
   // Ensure the canvas size matches the video size
   canvasElement.width = videoElement.videoWidth;
@@ -62,17 +63,27 @@ faceMesh.onResults((results) => {
         const smoothedLeftEar = smoothLandmark(leftEarHistory);
         const smoothedRightEar = smoothLandmark(rightEarHistory);
 
-        // Draw the smoothed left ear dot
-        canvasCtx.beginPath();
-        canvasCtx.arc((smoothedLeftEar.x * canvasElement.width)+20, (smoothedLeftEar.y * canvasElement.height)+30, 8, 0, 2 * Math.PI);
-        canvasCtx.fillStyle = dotColor; // Use the selected dot color
-        canvasCtx.fill();
+        let dynamicWidth = canvasElement.width * 0.1; // 10% of the canvas width
+        let dynamicHeight = canvasElement.height * 0.1; // 10% of the canvas height
 
-        // Draw the smoothed right ear dot
-        canvasCtx.beginPath();
-        canvasCtx.arc((smoothedRightEar.x * canvasElement.width)-20, (smoothedRightEar.y * canvasElement.height)+30, 8, 0, 2 * Math.PI);
-        canvasCtx.fillStyle = dotColor; // Use the selected dot color
-        canvasCtx.fill();
+        // Ensure the image maintains its aspect ratio
+        const aspectRatio = selectedLeftEarring.width / selectedLeftEarring.height;
+
+        if (dynamicWidth / aspectRatio > dynamicHeight) {
+            dynamicWidth = dynamicHeight * aspectRatio;
+        } else {
+            dynamicHeight = dynamicWidth / aspectRatio;
+        }
+
+        // Draw the left earring image
+        if (selectedLeftEarring.src) {
+          canvasCtx.drawImage(selectedLeftEarring, (smoothedLeftEar.x * canvasElement.width) + 20, (smoothedLeftEar.y * canvasElement.height) + 40, dynamicWidth, dynamicHeight);
+        }
+
+        // Draw the right earring image
+        if (selectedRightEarring.src) {
+          canvasCtx.drawImage(selectedRightEarring, (smoothedRightEar.x * canvasElement.width) - 40, (smoothedRightEar.y * canvasElement.height) + 40, dynamicWidth, dynamicHeight);
+        }
       }
     }
   }
@@ -103,9 +114,22 @@ const startWebcam = () => {
 // Initialize webcam and FaceMesh
 startWebcam();
 
-// Handle color change events
-colorButtons.forEach(button => {
-  button.addEventListener('click', (e) => {
-    dotColor = e.target.dataset.color; // Update dot color based on user selection
-  });
-});
+function updateEarringMenu() {
+  earringMenu.innerHTML = ''; // Clear menu first
+
+  fetch('/earrings')
+    .then(response => response.json())
+    .then(data => {
+      if (data.length > 0) {
+        // Set default earrings to the first entry
+        setEarrings(data[0].left_image, data[0].right_image);
+
+        // Display earrings in the menu
+        data.forEach((earring, index) => {
+          let earringOption = document.createElement('div');
+          earringOption.classList.add('earring-option');
+          earringOption.innerHTML = `
+            <img src="${earring.image}" alt="Earring Image" class="earring-menu-image" data-left="${earring.left_image}" data-right="${earring.right_image}">
+          `;
+          earringOption.addEventListener('click', (e) => {
+            setEarrings(e.target.dataset.left, e.target.datas

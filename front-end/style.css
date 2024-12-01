@@ -34,7 +34,7 @@ body, html {
   }
   
   /* Color Selection Menu */
-  #color-menu {
+  #earring-menu {
     position: absolute;
     bottom: 20px;
     display: flex;
@@ -107,3 +107,11 @@ body, html {
     background-color: #ced9db;
   }
   
+  .earring-menu-image {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+  }
+
+  #overlay {
+    positio

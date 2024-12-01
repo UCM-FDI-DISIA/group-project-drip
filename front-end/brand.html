@@ -8,7 +8,13 @@
 </head>
 <body>
     <!-- Log Out button placed outside of welcomeMessage for consistent visibility -->
-    <button id="logoutButton" style="display: none;">Log Out</button>
+
+    <div class="dropdown">
+        <button class="dropbtn">&#9776;</button>
+        <div class="dropdown-content">
+          <a href="index.html">Earring Try On</a>
+        </div>
+    </div>
 
     <!-- Container for the login and signup forms -->
     <div class="container" id="authContainer">
@@ -33,10 +39,12 @@
                 <button type="submit">Login</button>
             </form>
         </div>
+
     </div>
 
     <!-- Welcome section with upload and table for admin -->
     <div class="welcome" id="welcomeMessage" style="display: none;">
+                
         <h2 id="welcomeText"></h2>
 
         <!-- Form for uploading earrings (visible to brands only) -->
@@ -49,10 +57,8 @@
                 <label for="productImage">Product Image:</label>
                 <input type="file" id="productImage" name="productImage" accept="image/*" required>
                 <canvas id="canvas" style="display:none;"></canvas>
+
                 <a id="leftDownload" style="display:none;">Download Left</a>
-                
-                
-                
                 <a id="rightDownload" style="display:none;">Download Right</a>
 
                 <label for="purchaseLink">Purchase Link:</label>
@@ -66,13 +72,12 @@
                 <p><strong>Name:</strong> <span id="displayProductName"></span></p>
                 <p><strong>Purchase Link:</strong> <a id="displayPurchaseLink" href="#" target="_blank"></a></p>
                 <img id="displayProductImage" src="#" alt="Earring Image">
-                <img id="leftImage">
-                <img id="rightImage">
             </div>
+
         </div>
 
         <!-- Table of earrings (visible to admin only) -->
-        <div id="adminTableSection" style="display: none;">
+        <div id="adminTableSection" style="display: none; margin-top: 50px;">
             <h3>Earring List</h3>
             <table id="earringTable">
                 <thead>
@@ -80,16 +85,14 @@
                         <th>Brand</th>
                         <th>Earring Title</th>
                         <th>Earring Image</th>
-                        <th>Left Earring</th>
-                        <th>Right Earring</th>
                         <th>Purchase Link</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
             </table>
         </div>
+
+        <button id="logoutButton" style="display: none;">Log Out</button>
     </div>
 
-    <script src="brand.js"></script>
-</body>
-</html>
+    <script s

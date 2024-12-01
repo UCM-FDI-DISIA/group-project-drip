@@ -1,3 +1,15 @@
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/earrings')
+        .then(response => response.json())
+        .then(data => {
+            earrings = data;
+            updateEarringTable();
+        })
+        .catch(error => {
+            console.error("Error fetching earrings:", error);
+        });
+});
+
 // Store accounts
 let accounts = {
     admin: "password" // Default admin account
@@ -66,9 +78,6 @@ document.getElementById('login-form').addEventListener('submit', function(event)
     document.getElementById('login-form').reset();
 });
 
-// added for db
-const googleSheetsUrl = "";
-
 // Earring upload logic for brands
 document.getElementById('earring-form').addEventListener('submit', function (event) {
     event.preventDefault();
@@ -128,24 +137,9 @@ document.getElementById('earring-form').addEventListener('submit', function (eve
 
                 // Convert the left half to a downloadable image
                 const leftDataURL = leftCanvas.toDataURL('image/jpeg');
-                const leftImage = document.getElementById('leftImage');
-                leftImage.src = leftDataURL;
-                const leftLink = document.getElementById('leftDownload');
-                leftLink.href = leftDataURL;
-                leftLink.download = 'left.jpg';
-                leftLink.textContent = 'Download Left Half';
-                leftLink.style.display = 'block';
 
                 // Convert the right half to a downloadable image
                 const rightDataURL = rightCanvas.toDataURL('image/jpeg');
-                const rightImage = document.getElementById('rightImage');
-                rightImage.src = rightDataURL;
-                const rightLink = document.getElementById('rightDownload');
-                rightLink.href = rightDataURL;
-                rightLink.download = 'right.jpg';
-                rightLink.textContent = 'Download Right Half';
-                rightLink.style.display = 'block';
-
                 // Update earring data with left and right image data
                 earringData.left = leftDataURL;
                 earringData.right = rightDataURL;
@@ -162,27 +156,26 @@ document.getElementById('earring-form').addEventListener('submit', function (eve
 
                 // Update table for admin view
                 updateEarringTable();
-            
-                // Send data to Google Sheets
-        fetch(googleSheetsUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(earringData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === "success") {
-                alert("Earring uploaded successfully!");
-                updateEarringTable(); // Update table (local or refetch if needed)
-            } else {
-                alert("Failed to upload earring. Please try again.");
-            }
-        })
-        .catch(error => {
-            console.error("Error uploading earring:", error);
-            alert("Error uploading earring. Please try again.");
-        });
-                
+
+                // Send data to server
+                fetch('/upload-earring', {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(earringData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        alert("Earring uploaded successfully!");
+                        updateEarringTable(); // Update table (local or refetch if needed)
+                    } else {
+                        alert("Failed to upload earring. Please try again.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error uploading earring:", error);
+                    alert("Error uploading earring. Please try again.");
+                });
             };
         };
 
@@ -192,26 +185,34 @@ document.getElementById('earring-form').addEventListener('submit', function (eve
     document.getElementById('earring-form').reset();
 });
 
-
-
 // Update earring table for admin
 function updateEarringTable() {
     let tableBody = document.querySelector('#earringTable tbody');
     tableBody.innerHTML = ''; // Clear table first
 
-    earrings.forEach(earring => {
-        let row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${earring.brand}</td>
-            <td>${earring.name}</td>
-            <td><img src="${earring.image}" alt="Earring Image"></td>
-            <td><img src="${earring.left}" alt="Left Earring"></td>
-            <td><img src="${earring.right}" alt="Right Earring"></td>
-            <td><a href="${earring.link}" target="_blank">Buy Here</a></td>
-        `;
-        tableBody.appendChild(row);
-    });
+    fetch('/earrings')
+        .then(response => response.json())
+        .then(data => {
+            earrings = data;
+            earrings.forEach(earring => {
+                let row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${earring.brand}</td>
+                    <td>${earring.name}</td>
+                    <td><img src="${earring.image}" alt="Earring Image"></td>
+                    <td><a href="${earring.link}" target="_blank">Buy Here</a></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching earrings:", error);
+        });
 }
 
 // Logout button functionality
 document.getElementById('logoutButton').addEventListener('click', logOut);
+
+
+
+
