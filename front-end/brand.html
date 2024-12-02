@@ -7,19 +7,44 @@
     <link rel="stylesheet" href="brand.css">
 </head>
 <body>
+    <!-- Log Out button placed outside of welcomeMessage for consistent visibility -->
 
-  <div class="container">
-    <div id="loginSection">
-      <h2>Brand Login</h2>
-      <form id="login-form">
-        <input type="text" id="loginBrandName" placeholder="Brand Name" required />
-        <input type="password" id="loginPassword" placeholder="Password" required />
-        <button type="submit">Login</button>
-      </form>
+    <div class="dropdown">
+        <button class="dropbtn">&#9776;</button>
+        <div class="dropdown-content">
+          <a href="index.html">Earring Try On</a>
+        </div>
+    </div>
+
+    <!-- Container for the login and signup forms -->
+    <div class="container" id="authContainer">
+        <div class="form-section">
+            <h2>Create Account</h2>
+            <form id="signup-form">
+                <label for="brandName">Brand Name (No spaces):</label>
+                <input type="text" id="brandName" name="brandName" required pattern="\S+">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+
+        <div class="form-section">
+            <h2>Login</h2>
+            <form id="login-form">
+                <label for="loginBrandName">Brand Name:</label>
+                <input type="text" id="loginBrandName" name="loginBrandName" required>
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" name="loginPassword" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
     </div>
 
     <!-- Welcome section with upload and table for admin -->
     <div class="welcome" id="welcomeMessage" style="display: none;">
+                
         <h2 id="welcomeText"></h2>
 
         <!-- Form for uploading earrings (visible to brands only) -->
@@ -28,10 +53,17 @@
             <form id="earring-form">
                 <label for="productName">Product Name:</label>
                 <input type="text" id="productName" name="productName" required>
+
                 <label for="productImage">Product Image:</label>
                 <input type="file" id="productImage" name="productImage" accept="image/*" required>
+                <canvas id="canvas" style="display:none;"></canvas>
+
+                <a id="leftDownload" style="display:none;">Download Left</a>
+                <a id="rightDownload" style="display:none;">Download Right</a>
+
                 <label for="purchaseLink">Purchase Link:</label>
                 <input type="url" id="purchaseLink" name="purchaseLink" required>
+                
                 <button type="submit">Upload Earring</button>
             </form>
 
@@ -41,10 +73,11 @@
                 <p><strong>Purchase Link:</strong> <a id="displayPurchaseLink" href="#" target="_blank"></a></p>
                 <img id="displayProductImage" src="#" alt="Earring Image">
             </div>
+
         </div>
 
         <!-- Table of earrings (visible to admin only) -->
-        <div id="adminTableSection" style="display: none;">
+        <div id="adminTableSection" style="display: none; margin-top: 50px;">
             <h3>Earring List</h3>
             <table id="earringTable">
                 <thead>
@@ -58,7 +91,10 @@
                 <tbody></tbody>
             </table>
         </div>
+
+        <button id="logoutButton" style="display: none;">Log Out</button>
     </div>
 
+    <script src="brand.js"></script>
 </body>
 </html>
