@@ -1,6 +1,6 @@
-#Drip Earring Try On
+# Drip Earring Try On
 
-##Set Up
+## Set Up
 1. Install Node.js
 
 In the terminal run:
