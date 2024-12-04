@@ -9,7 +9,7 @@ body, html {
   
   #camera {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     position: relative; /* To contain the absolute positioning of dropdown */
     height: 100vh;
@@ -35,12 +35,11 @@ body, html {
   
   /* Color Selection Menu */
   #earring-menu {
-    position: absolute;
-    bottom: 20px;
     display: flex;
     justify-content: center;
     gap: 10px;
-    width: 100%; /* Center the color menu */
+    margin-top: 20px; /* Adjust spacing as needed */
+    z-index: 5; /* Ensure it stays above the canvas if needed */
   }
   
   .color-option {
@@ -118,3 +117,36 @@ body, html {
     top: 0;
     left: 0;
   }
+
+/* Add these styles to your existing CSS file */
+
+/* Styling for the earring menu and button container */
+#earring-container {
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Ensure items are at the top of the container */
+    width: 100%; /* Take full width of the parent */
+    position: relative; /* Ensure it positions correctly within its parent */
+    z-index: 5; /* Adjust z-index to stay above the canvas if needed */
+    bottom: 20px;
+}
+
+/* Styling for the purchase button */
+#purchase-button {
+    display: block;
+    width: 50%; /* Adjust width as needed */
+    margin: 10px 0; /* Adds space above and below the button */
+    padding: 12px;
+    background-color: #ced9db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    z-index: 5; /* Ensure it stays above the canvas if needed */
+}
+
+#purchase-button:hover {
+  background-color: #bdc8ca;

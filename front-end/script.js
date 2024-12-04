@@ -114,6 +114,17 @@ const startWebcam = () => {
 // Initialize webcam and FaceMesh
 startWebcam();
 
+let purchaseLink = '';
+
+// Function to handle the purchase button click
+document.getElementById('purchase-button').addEventListener('click', () => {
+  if (purchaseLink) {
+    window.open(purchaseLink, '_blank');
+  } else {
+    console.error('No purchase link available');
+  }
+});
+
 function updateEarringMenu() {
   earringMenu.innerHTML = ''; // Clear menu first
 
@@ -124,6 +135,8 @@ function updateEarringMenu() {
         // Set default earrings to the first entry
         setEarrings(data[0].left_image, data[0].right_image);
 
+        purchaseLink = data[0].link;
+
         // Display earrings in the menu
         data.forEach((earring, index) => {
           let earringOption = document.createElement('div');
@@ -133,6 +146,7 @@ function updateEarringMenu() {
           `;
           earringOption.addEventListener('click', (e) => {
             setEarrings(e.target.dataset.left, e.target.dataset.right);
+            purchaseLink = earring.link;
           });
           earringMenu.appendChild(earringOption);
 

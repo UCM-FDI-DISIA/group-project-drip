@@ -103,8 +103,8 @@ app.listen(port, () => {
 
 // db.run(`
 //     DELETE FROM earrings
-//     WHERE name = ?;
-// `, ["Garson Gold Plated Hoop Earrings"], (err) => {
+//     WHERE link = ?;
+// `, ["https://www.nordstrom.com/s/tory-burch-kira-stud-earrings/7528067?origin=keywordsearch-personalizedsort&breadcrumb=Home%2FAll%20Results&color=710"], (err) => {
 //     if (err) {
 //         console.error("Error deleting rows:", err.message);
 //     } else {
